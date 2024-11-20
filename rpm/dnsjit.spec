@@ -29,9 +29,6 @@ BuildRequires:  libtool
 
 # luajit dependency is not built for all platforms.
 ExcludeArch:    riscv64 ppc64 ppc64le
-# luajit support for s390x were recently added (rhbz#2222911), but does not build correctly
-# /usr/bin/luajit: /usr/share/luajit-2.1/jit/bcsave.lua:243: assertion failed! (rhbz#2323980)
-ExcludeArch:    s390x
 
 %description
 dnsjit is a combination of parts taken from dsc, dnscap, drool,
@@ -101,6 +98,7 @@ sh autogen.sh
 %changelog
 * Wed Apr 16 2025 Petr Menšík <pemensik@redhat.com> - 1.5.0-2
 - Make spec up-to-date with recent Fedora
+- Compile on s390x too.
 
 * Wed Apr 16 2025 Jerry Lundström <lundstrom.jerry@gmail.com> 1.5.0-1
 - Release v1.5.0
