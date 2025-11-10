@@ -45,7 +45,6 @@ providing facilities for replaying DNS traffic.
 
 
 %package devel
-BuildArch:  noarch
 Summary:    Engine for capturing, parsing and replaying DNS - development files
 Group:      Development/Libraries/C and C++
 Requires:   %{name}%{?_isa} = %{version}-%{release}
@@ -72,18 +71,41 @@ providing facilities for replaying DNS traffic.
 This package includes development files needed to create dnsjit modules.
 
 
+%package examples
+BuildArch:  noarch
+Summary:    Engine for capturing, parsing and replaying DNS - examples
+Group:      Productivity/Networking/DNS/Utilities
+Requires:   %{name} = %{version}-%{release}
+
+%description examples
+dnsjit is a combination of parts taken from dsc, dnscap, drool,
+and put together around Lua to create a script-based engine for easy
+capturing, parsing and statistics gathering of DNS message while also
+providing facilities for replaying DNS traffic.
+
+This package includes examples of prepared scripts.
+
+
 %prep
 %autosetup
 
 
 %build
-sh autogen.sh
+autoreconf
 %configure
 %make_build
 
 
 %install
 %make_install
+
+# executables do not belong into doc directory
+rm -f %{buildroot}%{_datadir}/doc/%{name}/*.lua
+# we put this to different place
+rm -f %{buildroot}%{_datadir}/doc/%{name}/LICENSE
+mkdir -p %{buildroot}%{_libexecdir}/%{name}/
+cp -p examples/*.lua %{buildroot}%{_libexecdir}/%{name}/
+
 
 %check
 %make_build test
@@ -93,7 +115,6 @@ sh autogen.sh
 %license LICENSE
 %doc README.md
 %doc CHANGES
-%doc %{_datadir}/doc/%{name}/
 %{_bindir}/%{name}*
 %{_mandir}/man1/%{name}*
 %{_mandir}/man3/%{name}*
@@ -101,6 +122,8 @@ sh autogen.sh
 %files devel
 %{_includedir}/%{name}/
 
+%files examples
+%{_libexecdir}/%{name}/
 
 %changelog
 %autochangelog
