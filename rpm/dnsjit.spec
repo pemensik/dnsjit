@@ -15,6 +15,9 @@ VCS:            git:%{url}
 # https://github.com/jelu/dist-tools
 Source0:        %{url_files}/%{name}-%{version}.tar.gz
 
+# https://codeberg.org/DNS-OARC/dnsjit/pulls/269
+Patch1:         dnsjit-s390x-ipsplit.patch
+
 BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  libpcap-devel
@@ -87,7 +90,7 @@ This package includes examples of prepared scripts.
 
 
 %prep
-%autosetup
+%autosetup -p1
 
 
 %build
@@ -108,7 +111,14 @@ cp -p examples/*.lua %{buildroot}%{_libexecdir}/%{name}/
 
 
 %check
+%ifnarch s390x
 %make_build test
+%else
+# Some tests are failing on s390x only, known issue
+# https://codeberg.org/DNS-OARC/dnsjit/issues/250
+# https://bugzilla.redhat.com/show_bug.cgi?id=2323980#c7
+%make_build test TEST_IPSPLIT=''
+%endif
 
 
 %files

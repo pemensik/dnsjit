@@ -1,0 +1,26 @@
+From 61a4f3b0e1d1125d28b0773c8de58a7f8e15d1d3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20Men=C5=A1=C3=ADk?= <pemensik@redhat.com>
+Date: Thu, 13 Nov 2025 15:40:57 +0100
+Subject: [PATCH] Make ipsplit test avoidable
+
+---
+ src/test/Makefile.am | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/test/Makefile.am b/src/test/Makefile.am
+index 8446253..9367ed8 100644
+--- a/src/test/Makefile.am
++++ b/src/test/Makefile.am
+@@ -20,7 +20,8 @@ MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
+ CLEANFILES = test*.log test*.trs test*.out \
+   *.pcap-dist *.lz4-dist *.zst-dist
+ 
+-TESTS = test1.sh test2.sh test3.sh test4.sh test6.sh test-ipsplit.sh \
++TEST_IPSPLIT = test-ipsplit.sh
++TESTS = test1.sh test2.sh test3.sh test4.sh test6.sh $(TEST_IPSPLIT) \
+   test-trie.sh test-base64url.sh test-padding.sh test-sll2.sh
+ 
+ test1.sh: dns.pcap-dist dns.pcap.lz4-dist dns.pcap.zst-dist \
+-- 
+2.51.1
+
